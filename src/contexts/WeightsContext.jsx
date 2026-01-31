@@ -5,55 +5,72 @@ import {
   useState,
   useCallback,
   useEffect,
+  useRef,
 } from "react";
 import { useDataStore } from "./DataContext";
+import { v4 as uuidv4 } from "uuid";
 
 const WeightsContext = createContext(undefined);
 
 export const WeightsProvider = ({ children }) => {
   const store = useDataStore();
-  const [weights, setWeights] = useState([]);
+  const saveQueue = useRef(Promise.resolve());
   const [loading, setLoading] = useState(true);
+  const [weights, setWeights] = useState([]);
 
+  // Hydrate once
   useEffect(() => {
     let cancelled = false;
+
     (async () => {
       setLoading(true);
-      const all = await store.getWeights();
-      if (!cancelled) {
-        setWeights(all);
-        setLoading(false);
+      try {
+        const all = await store.getWeights();
+        if (!cancelled) {
+          setWeights(Array.isArray(all) ? all : []);
+          setLoading(false);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          console.error("Failed to load weights:", err);
+          setWeights([]);
+          setLoading(false);
+        }
       }
     })();
+
     return () => {
       cancelled = true;
     };
   }, [store]);
 
-  const addWeight = useCallback(
-    async (entry) => {
-      const created = await store.addWeight(entry);
-      setWeights((prev) => [...prev, created]);
-    },
-    [store],
-  );
+  // Persist snapshots, serialized, but only after hydration
+  useEffect(() => {
+    if (loading) return;
 
-  const updateWeight = useCallback(
-    async (id, updates) => {
-      const updated = await store.updateWeight(id, updates);
-      if (!updated) return;
-      setWeights((prev) => prev.map((w) => (w.id === id ? updated : w)));
-    },
-    [store],
-  );
+    saveQueue.current = saveQueue.current
+      .then(() => store.saveWeights(weights))
+      .catch((err) => {
+        // keep the chain alive
+        console.error("Failed to save weights:", err);
+      });
+  }, [store, weights, loading]);
 
-  const deleteWeight = useCallback(
-    async (id) => {
-      await store.deleteWeight(id);
-      setWeights((prev) => prev.filter((w) => w.id !== id));
-    },
-    [store],
-  );
+  // Mutators: sync, stable, based on prev state
+  const addWeight = useCallback((entry) => {
+    const created = { id: uuidv4(), ...entry };
+    setWeights((prev) => [...prev, created]);
+  }, []);
+
+  const updateWeight = useCallback((id, updates) => {
+    setWeights((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, ...updates } : w)),
+    );
+  }, []);
+
+  const deleteWeight = useCallback((id) => {
+    setWeights((prev) => prev.filter((w) => w.id !== id));
+  }, []);
 
   const value = useMemo(
     () => ({

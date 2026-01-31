@@ -1,59 +1,33 @@
 import localforage from "localforage";
-import { v4 as uuidv4 } from "uuid";
 
-const STORAGE_KEY = "weight-tracker:weights";
+const WEIGHT_STORAGE_KEY = "weight-tracker:weights";
+const SETTINGS_STORAGE_KEY = "weight-tracker:settings";
 
-/** @returns {Promise<import("../core/types").WeightEntry[]>} */
-async function readAll() {
-  const raw = await localforage.getItem(STORAGE_KEY);
-  if (!raw) return [];
-
-  if (Array.isArray(raw)) {
-    return /** @type {import("../core/types").WeightEntry[]} */ (raw);
-  }
-
-  try {
-    // if for some reason it’s a JSON string
-    return JSON.parse(raw);
-  } catch {
-    return [];
-  }
+async function load(key) {
+  const raw = await localforage.getItem(key);
+  return raw ?? null;
 }
 
-/** @param {import("../core/types").WeightEntry[]} weights */
-async function writeAll(weights) {
-  await localforage.setItem(STORAGE_KEY, weights);
+async function save(key, value) {
+  await localforage.setItem(key, value);
 }
 
-/** @type {import("../core/types").WeightDataStore} */
 export const dataStore = {
-  async addWeight(entryWithoutId) {
-    const weights = await readAll();
-    const newEntry = { id: uuidv4(), ...entryWithoutId };
-    const updated = [...weights, newEntry];
-    await writeAll(updated);
-    return newEntry;
-  },
-
   async getWeights() {
-    return readAll();
+    const raw = await load(WEIGHT_STORAGE_KEY);
+    return Array.isArray(raw) ? raw : [];
   },
 
-  async updateWeight(id, updates) {
-    const weights = await readAll();
-    const index = weights.findIndex((w) => w.id === id);
-    if (index === -1) return null;
-
-    const updatedEntry = { ...weights[index], ...updates };
-    const updatedList = [...weights];
-    updatedList[index] = updatedEntry;
-    await writeAll(updatedList);
-    return updatedEntry;
+  async saveWeights(weights) {
+    await save(WEIGHT_STORAGE_KEY, weights);
   },
 
-  async deleteWeight(id) {
-    const weights = await readAll();
-    const updated = weights.filter((w) => w.id !== id);
-    await writeAll(updated);
+  async getSettings() {
+    const raw = await load(SETTINGS_STORAGE_KEY);
+    return raw && typeof raw === "object" && !Array.isArray(raw) ? raw : null;
+  },
+
+  async saveSettings(settings) {
+    await save(SETTINGS_STORAGE_KEY, settings);
   },
 };
