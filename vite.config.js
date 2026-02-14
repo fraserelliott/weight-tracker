@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
         "@hooks": path.resolve("src/hooks"),
         "@components": path.resolve("src/components"),
         "@store": defineStore(platform),
+        "@util": path.resolve("src/util"),
       },
     },
   };

@@ -17,7 +17,14 @@ const SettingsContext = createContext(undefined);
 
 const DEFAULT_SETTINGS = Object.freeze({
   dateFormat: parseDateFormatString("WWW DD/MM/YYYY"),
+  weightFormat: "kg",
 });
+
+function formatDecimal(x) {
+  let d = x;
+  if (typeof x !== "number") d = parseFloat(x);
+  return d.toFixed(1);
+}
 
 export const SettingsProvider = ({ children }) => {
   const store = useDataStore();
@@ -86,14 +93,50 @@ export const SettingsProvider = ({ children }) => {
     [dateFormatSetting],
   );
 
+  const weightFormatSetting =
+    settings?.weightFormat ?? DEFAULT_SETTINGS.weightFormat;
+
+  const toDisplayWeight = useCallback(
+    (weightKg) => {
+      switch (weightFormatSetting) {
+        case "kg":
+          return formatDecimal(weightKg);
+        case "lb":
+          return formatDecimal(weightKg * 2.20462);
+      }
+    },
+    [weightFormatSetting],
+  );
+
+  const fromDisplayWeight = useCallback(
+    (weight) => {
+      switch (weightFormatSetting) {
+        case "kg":
+          return formatDecimal(weight);
+        case "lb":
+          return formatDecimal(weight / 2.20462);
+      }
+    },
+    [weightFormatSetting],
+  );
+
   const value = useMemo(
     () => ({
       settings,
       loading,
       setDateFormat,
       applyDateFormat,
+      toDisplayWeight,
+      fromDisplayWeight,
     }),
-    [settings, loading, setDateFormat, applyDateFormat],
+    [
+      settings,
+      loading,
+      setDateFormat,
+      applyDateFormat,
+      toDisplayWeight,
+      fromDisplayWeight,
+    ],
   );
 
   return (

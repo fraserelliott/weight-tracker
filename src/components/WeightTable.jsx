@@ -2,10 +2,15 @@ import { useWeights } from "@contexts/WeightsContext";
 import { useSettings } from "@contexts/SettingsContext";
 
 export function WeightTable() {
-  const { applyDateFormat } = useSettings();
-  const { weights, loading } = useWeights();
+  const {
+    settings,
+    applyDateFormat,
+    toDisplayWeight,
+    loading: settingsLoading,
+  } = useSettings();
+  const { weights, loading: weightsLoading } = useWeights();
 
-  if (loading) return <p>Loading...</p>;
+  if (weightsLoading || settingsLoading) return <p>Loading...</p>;
   if (!weights.length) return <p>No entries yet.</p>;
 
   // Sort newest first
@@ -18,8 +23,9 @@ export function WeightTable() {
       <ul>
         {sorted.map((w) => (
           <li key={w.id}>
-            {applyDateFormat(w.date)}: {w.weightKg.toFixed(1)}kg
-          </li> //TODO: settings and formatting
+            {applyDateFormat(w.date)}: {toDisplayWeight(w.weightKg)}
+            {settings.weightFormat}
+          </li>
         ))}
       </ul>
     </div>

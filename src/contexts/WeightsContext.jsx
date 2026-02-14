@@ -57,8 +57,8 @@ export const WeightsProvider = ({ children }) => {
   }, [store, weights, loading]);
 
   // Mutators: sync, stable, based on prev state
-  const addWeight = useCallback((entry) => {
-    const created = { id: uuidv4(), ...entry };
+  const addWeight = useCallback((date, weightKg) => {
+    const created = { id: uuidv4(), date, weightKg };
     setWeights((prev) => [...prev, created]);
   }, []);
 
