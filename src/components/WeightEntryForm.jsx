@@ -2,9 +2,10 @@ import { useForm } from "react-hook-form";
 import { useWeights } from "@contexts/WeightsContext";
 import { useSettings } from "@contexts/SettingsContext";
 import { nowISODate } from "@util/dateUtil";
+import { UI } from "@styles/components";
 
 export function WeightEntryForm() {
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       date: nowISODate(),
     },
@@ -26,15 +27,28 @@ export function WeightEntryForm() {
       return;
     }
     addWeight(data.date, fromDisplayWeight(data.weight));
+    reset();
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(submitForm)}>
-        <input type="date" {...register("date", { required: true })} />
-        <input type="number" {...register("weight", { required: true })} />
-        {settings.weightFormat}
-        <input type="submit" value="Add" />
+    <div style={{ width: "300px" }} className={UI.Panel()}>
+      <form
+        onSubmit={handleSubmit(submitForm)}
+        className="fe-d-flex fe-justify-between fe-items-center"
+      >
+        <input
+          type="date"
+          {...register("date", { required: true })}
+          className={UI.InputPrimary()}
+        />
+        <input
+          type="number"
+          {...register("weight", { required: true })}
+          className={UI.InputPrimary()}
+          style={{ width: "4em" }}
+        />
+        <label>{settings.weightFormat}</label>
+        <input type="submit" value="Add" className={UI.BtnPrimary()} />
       </form>
     </div>
   );
