@@ -72,6 +72,13 @@ export const WeightsProvider = ({ children }) => {
     setWeights((prev) => prev.filter((w) => w.id !== id));
   }, []);
 
+  const findDuplicate = useCallback(
+    (entry) => {
+      return weights.find((e) => e.date === entry.date);
+    },
+    [weights],
+  );
+
   const value = useMemo(
     () => ({
       weights,
@@ -79,8 +86,9 @@ export const WeightsProvider = ({ children }) => {
       addWeight,
       updateWeight,
       deleteWeight,
+      findDuplicate,
     }),
-    [weights, loading, addWeight, updateWeight, deleteWeight],
+    [weights, loading, addWeight, updateWeight, deleteWeight, findDuplicate],
   );
 
   return (

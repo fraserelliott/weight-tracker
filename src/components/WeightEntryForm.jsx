@@ -9,7 +9,7 @@ export function WeightEntryForm() {
       date: nowISODate(),
     },
   });
-  const { addWeight, loading: weightsLoading } = useWeights();
+  const { addWeight, findDuplicate, loading: weightsLoading } = useWeights();
   const {
     settings,
     fromDisplayWeight,
@@ -19,6 +19,12 @@ export function WeightEntryForm() {
   if (weightsLoading || settingsLoading) return <p>Loading...</p>;
 
   const submitForm = (data) => {
+    const duplicate = findDuplicate(data);
+    if (duplicate) {
+      // TODO: confirm box to ask if the user wants to update
+      console.warn(`Duplicate date detected for ${data.date}`);
+      return;
+    }
     addWeight(data.date, fromDisplayWeight(data.weight));
   };
 
