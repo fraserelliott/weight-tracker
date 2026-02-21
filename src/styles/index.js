@@ -1,5 +1,8 @@
-import { FEComponents } from "@fraserelliott/fe-utilities/presets";
 import { cx } from "@fraserelliott/fe-utilities/cx";
+
+export const appearance = {
+  Panel: "bg-secondary glass-border fe-rounded-1 box-shadow-subtle",
+};
 
 export const UI = {
   Btn: (...extra) =>
@@ -13,9 +16,5 @@ export const UI = {
       "bg-subtle text-primary glass-border box-shadow-subtle fe-rounded-1",
       ...extra,
     ),
-  Panel: (...extra) =>
-    cx(
-      "bg-secondary glass-border fe-p-em-1 fe-rounded-1 box-shadow-subtle",
-      ...extra,
-    ),
+  Panel: (...extra) => cx("fe-p-em-1", appearance.Panel, ...extra),
 };

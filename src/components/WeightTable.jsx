@@ -1,7 +1,8 @@
 import { useWeights } from "@contexts/WeightsContext";
 import { useSettings } from "@contexts/SettingsContext";
 import { useState } from "react";
-import { UI } from "@styles/components";
+import { UI, appearance } from "@styles";
+import { OptionalPortal, ConfirmDialog } from "@fraserelliott/fe-components";
 
 export function WeightTable() {
   const {
@@ -10,8 +11,10 @@ export function WeightTable() {
     toDisplayWeight,
     loading: settingsLoading,
   } = useSettings();
-  const { weights, loading: weightsLoading } = useWeights();
+  const { weights, deleteWeight, loading: weightsLoading } = useWeights();
   const [extended, setExtended] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [pendingId, setPendingId] = useState(null);
 
   if (weightsLoading || settingsLoading) return <p>Loading...</p>;
   if (!weights.length) return <p>No entries yet.</p>;
@@ -21,6 +24,24 @@ export function WeightTable() {
   const sorted = [...weights].sort(
     (a, b) => new Date(b.date) - new Date(a.date),
   );
+
+  const openConfirm = (id) => {
+    setPendingId(id);
+    setShowDialog(true);
+  };
+
+  const onOpenChange = (isOpen, reason) => {
+    setShowDialog(isOpen);
+  };
+
+  const onCancel = () => {
+    setPendingId(null);
+  };
+
+  const onConfirm = async () => {
+    await deleteWeight(pendingId);
+    setPendingId(null);
+  };
 
   return (
     <div
@@ -39,10 +60,26 @@ export function WeightTable() {
               {applyDateFormat(w.date)}: {toDisplayWeight(w.weightKg)}
               {settings.weightFormat}
             </span>
-            <button className={UI.BtnPrimary()}>X</button>
+            <button
+              className={UI.BtnPrimary()}
+              onClick={() => openConfirm(w.id)}
+            >
+              X
+            </button>
           </li>
         ))}
       </ul>
+
+      <OptionalPortal portalTarget={document.body}>
+        <ConfirmDialog
+          open={showDialog}
+          text="Are you sure you want to delete this entry?"
+          onCancel={onCancel}
+          onConfirm={onConfirm}
+          onOpenChange={onOpenChange}
+          style={appearance}
+        />
+      </OptionalPortal>
     </div>
   );
 }

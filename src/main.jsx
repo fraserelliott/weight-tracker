@@ -5,13 +5,16 @@ import App from "./App.jsx";
 import { DataProvider } from "./contexts/DataContext.jsx";
 import { WeightsProvider } from "./contexts/WeightsContext.jsx";
 import { SettingsProvider } from "./contexts/SettingsContext.jsx";
+import { ToastProvider } from "@fraserelliott/fe-components";
 
 createRoot(document.getElementById("root")).render(
-  <DataProvider>
-    <SettingsProvider>
-      <WeightsProvider>
-        <App />
-      </WeightsProvider>
-    </SettingsProvider>
-  </DataProvider>,
+  <ToastProvider>
+    <DataProvider>
+      <SettingsProvider>
+        <WeightsProvider>
+          <App />
+        </WeightsProvider>
+      </SettingsProvider>
+    </DataProvider>
+  </ToastProvider>,
 );

@@ -58,7 +58,7 @@
 }
 
 .bg-secondary {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-secondary) !important;
 }
 
 .app-btn-primary {

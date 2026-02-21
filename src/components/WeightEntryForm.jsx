@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useWeights } from "@contexts/WeightsContext";
 import { useSettings } from "@contexts/SettingsContext";
 import { nowISODate } from "@util/dateUtil";
-import { UI } from "@styles/components";
+import { UI } from "@styles";
 
 export function WeightEntryForm() {
   const { register, handleSubmit, reset } = useForm({
