@@ -16,5 +16,11 @@ export const UI = {
       "bg-subtle text-primary glass-border box-shadow-subtle fe-rounded-1",
       ...extra,
     ),
-  Panel: (...extra) => cx("fe-p-em-1", appearance.Panel, ...extra),
+  Panel: (...extra) =>
+    cx(
+      "fe-p-em-1 fe-d-flex fe-flex-column fe-items-center fe-justify-center panel",
+      appearance.Panel,
+      ...extra,
+    ),
+  Table: (...extra) => cx("fe-w-100", ...extra),
 };

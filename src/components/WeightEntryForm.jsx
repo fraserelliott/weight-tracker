@@ -31,10 +31,10 @@ export function WeightEntryForm() {
   };
 
   return (
-    <div style={{ width: "300px" }} className={UI.Panel()}>
+    <div className={UI.Panel("fe-")}>
       <form
         onSubmit={handleSubmit(submitForm)}
-        className="fe-d-flex fe-justify-between fe-items-center"
+        className="fe-d-flex fe-gap-2 fe-justify-center fe-items-center fe-w-100"
       >
         <input
           type="date"

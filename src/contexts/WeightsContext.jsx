@@ -56,10 +56,32 @@ export const WeightsProvider = ({ children }) => {
       });
   }, [store, weights, loading]);
 
+  const weightsWithStats = useMemo(() => {
+    return addRollingAverage(weights);
+  }, [weights]);
+
   // Mutators: sync, stable, based on prev state
   const addWeight = useCallback((date, weightKg) => {
-    const created = { id: uuidv4(), date, weightKg };
-    setWeights((prev) => [...prev, created]);
+    setWeights((prev) => {
+      const newDay = daysSinceEpoch(date);
+      const created = { id: uuidv4(), date, weightKg };
+
+      // Find insertion point
+      let i = 0;
+      for (; i < prev.length; i++) {
+        const day = daysSinceEpoch(prev[i].date);
+        if (day < newDay) break; // found where it belongs
+      }
+
+      // Insert at correct index
+      return [...prev.slice(0, i), created, ...prev.slice(i)];
+    });
+  }, []);
+
+  const sortWeights = useCallback(() => {
+    setWeights((prev) =>
+      [...prev].sort((a, b) => new Date(b.date) - new Date(a.date)),
+    );
   }, []);
 
   const updateWeight = useCallback((id, updates) => {
@@ -82,19 +104,59 @@ export const WeightsProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       weights,
+      weightsWithStats,
       loading,
       addWeight,
       updateWeight,
       deleteWeight,
       findDuplicate,
+      sortWeights,
     }),
-    [weights, loading, addWeight, updateWeight, deleteWeight, findDuplicate],
+    [
+      weights,
+      weightsWithStats,
+      loading,
+      addWeight,
+      updateWeight,
+      deleteWeight,
+      findDuplicate,
+      sortWeights,
+    ],
   );
 
   return (
     <WeightsContext.Provider value={value}>{children}</WeightsContext.Provider>
   );
 };
+
+// expects weightEntries sorted newest to oldest
+function addRollingAverage(weightEntries) {
+  return weightEntries.map((entry, index) => {
+    return {
+      ...entry,
+      rollingAverageKg: rollingAverageDay(weightEntries, index),
+    };
+  });
+}
+
+function rollingAverageDay(weightEntries, index) {
+  const indexDate = daysSinceEpoch(weightEntries[index].date);
+  let sum = 0;
+  let count = 0;
+  for (let i = index; i < weightEntries.length; i++) {
+    const entryDate = daysSinceEpoch(weightEntries[i].date);
+    const difference = indexDate - entryDate;
+    if (difference < 7) {
+      sum += weightEntries[i].weightKg;
+      count++;
+    }
+    if (difference >= 7) break;
+  }
+  return count ? sum / count : null;
+}
+
+const daysSinceEpoch = (dateStr) =>
+  Math.floor(new Date(dateStr + "T00:00:00Z").getTime() / 86400000);
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function useWeights() {

@@ -15,7 +15,15 @@ async function save(key, value) {
 export const dataStore = {
   async getWeights() {
     const raw = await load(WEIGHT_STORAGE_KEY);
-    return Array.isArray(raw) ? raw : [];
+    if (!Array.isArray(raw)) return [];
+
+    // hydrate to expected format
+    return raw.map((e) => ({
+      id: String(e.id),
+      date: String(e.date),
+      weightKg:
+        typeof e.weightKg === "number" ? e.weightKg : parseFloat(e.weightKg),
+    }));
   },
 
   async saveWeights(weights) {

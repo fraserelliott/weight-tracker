@@ -102,3 +102,11 @@ body,
   align-items: center;
   gap: 1rem;
 }
+
+.weight-table {
+  text-align: center;
+}
+
+.panel {
+  width: clamp(300px, 60vw, 600px);
+}

@@ -11,27 +11,21 @@ export function WeightTable() {
     toDisplayWeight,
     loading: settingsLoading,
   } = useSettings();
-  const { weights, deleteWeight, loading: weightsLoading } = useWeights();
+  const {
+    weightsWithStats,
+    deleteWeight,
+    loading: weightsLoading,
+  } = useWeights();
   const [extended, setExtended] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [pendingId, setPendingId] = useState(null);
 
   if (weightsLoading || settingsLoading) return <p>Loading...</p>;
-  if (!weights.length) return <p>No entries yet.</p>;
-
-  // TODO: consider moving sorting into context
-  // Sort newest first
-  const sorted = [...weights].sort(
-    (a, b) => new Date(b.date) - new Date(a.date),
-  );
+  if (!weightsWithStats.length) return <p>No entries yet.</p>;
 
   const openConfirm = (id) => {
     setPendingId(id);
     setShowDialog(true);
-  };
-
-  const onOpenChange = (isOpen, reason) => {
-    setShowDialog(isOpen);
   };
 
   const onCancel = () => {
@@ -44,42 +38,51 @@ export function WeightTable() {
   };
 
   return (
-    <div
-      style={extended ? extendedStyle : collapsedStyle}
-      onClick={() => setExtended((prev) => !prev)}
-      className={UI.Panel()}
-    >
-      <ul style={{ listStyle: "none" }}>
-        {sorted.map((w) => (
-          <li
-            key={w.id}
-            className="fe-d-flex fe-justify-between fe-items-center fe-p-em-1"
-          >
-            <div></div>
-            <span>
-              {applyDateFormat(w.date)}: {toDisplayWeight(w.weightKg)}
-              {settings.weightFormat}
-            </span>
-            <button
-              className={UI.BtnPrimary()}
-              onClick={() => openConfirm(w.id)}
-            >
-              X
-            </button>
-          </li>
-        ))}
-      </ul>
+    <div onClick={() => setExtended((prev) => !prev)} className={UI.Panel()}>
+      <div style={extended ? extendedStyle : collapsedStyle}>
+        <table className={UI.Table("weight-table")}>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Weight</th>
+              <th>7 Day Average</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {weightsWithStats.map((w) => (
+              <tr key={w.id} className="fe-p-em-1">
+                <td>{applyDateFormat(w.date)}</td>
+                <td>
+                  {toDisplayWeight(w.weightKg)} {settings.weightFormat}
+                </td>
+                <td>
+                  {toDisplayWeight(w.rollingAverageKg)} {settings.weightFormat}
+                </td>
+                <td>
+                  <button
+                    className={UI.BtnPrimary()}
+                    onClick={() => openConfirm(w.id)}
+                  >
+                    X
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      <OptionalPortal portalTarget={document.body}>
-        <ConfirmDialog
-          open={showDialog}
-          text="Are you sure you want to delete this entry?"
-          onCancel={onCancel}
-          onConfirm={onConfirm}
-          onOpenChange={onOpenChange}
-          style={appearance}
-        />
-      </OptionalPortal>
+        <OptionalPortal portalTarget={document.body}>
+          <ConfirmDialog
+            open={showDialog}
+            text="Are you sure you want to delete this entry?"
+            onCancel={onCancel}
+            onConfirm={onConfirm}
+            onOpenChange={setShowDialog}
+            style={appearance}
+          />
+        </OptionalPortal>
+      </div>
     </div>
   );
 }
@@ -87,7 +90,7 @@ export function WeightTable() {
 const defaultStyle = {
   overflow: "auto",
   transition: "max-height 250ms ease-in-out",
-  width: "300px",
+  width: "100%",
 };
 
 const collapsedStyle = {
