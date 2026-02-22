@@ -18,7 +18,7 @@ export const UI = {
     ),
   Panel: (...extra) =>
     cx(
-      "fe-p-em-1 fe-d-flex fe-flex-column fe-items-center fe-justify-center panel",
+      "fe-p-em-3 fe-d-flex fe-flex-column fe-items-center fe-justify-center panel",
       appearance.Panel,
       ...extra,
     ),

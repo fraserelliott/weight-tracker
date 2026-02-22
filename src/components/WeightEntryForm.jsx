@@ -47,7 +47,7 @@ export function WeightEntryForm() {
           className={UI.InputPrimary()}
           style={{ width: "4em" }}
         />
-        <label>{settings.weightFormat}</label>
+        {settings.weightFormat}
         <input type="submit" value="Add" className={UI.BtnPrimary()} />
       </form>
     </div>

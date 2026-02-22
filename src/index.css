@@ -57,6 +57,10 @@
   color: var(--text-primary);
 }
 
+.bg-primary {
+  background-color: var(--bg-primary);
+}
+
 .bg-secondary {
   background-color: var(--bg-secondary) !important;
 }
@@ -109,4 +113,12 @@ body,
 
 .panel {
   width: clamp(300px, 60vw, 600px);
+}
+
+.chart-tooltip {
+  background: var(--bg-primary) !important;
+  border: var(--glass-border) !important;
+  border-radius: 1em;
+  padding: 1em;
+  box-shadow: var(--box-shadow-subtle) !important;
 }

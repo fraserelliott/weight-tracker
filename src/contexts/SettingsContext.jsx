@@ -93,6 +93,24 @@ export const SettingsProvider = ({ children }) => {
     [dateFormatSetting],
   );
 
+  const formatDayMonth = useCallback(
+    (isoDate) => {
+      const [, m, d] = isoDate.split("-");
+      const sep = settings.dateFormat?.separator ?? "-";
+      const order = settings.dateFormat?.order ?? "YMD";
+
+      const parts = [];
+
+      for (const c of order) {
+        if (c === "M") parts.push(m);
+        if (c === "D") parts.push(d);
+      }
+
+      return parts.join(sep);
+    },
+    [settings.dateFormat],
+  );
+
   const weightFormatSetting =
     settings?.weightFormat ?? DEFAULT_SETTINGS.weightFormat;
 
@@ -128,6 +146,7 @@ export const SettingsProvider = ({ children }) => {
       applyDateFormat,
       toDisplayWeight,
       fromDisplayWeight,
+      formatDayMonth,
     }),
     [
       settings,
@@ -136,6 +155,7 @@ export const SettingsProvider = ({ children }) => {
       applyDateFormat,
       toDisplayWeight,
       fromDisplayWeight,
+      formatDayMonth,
     ],
   );
 
