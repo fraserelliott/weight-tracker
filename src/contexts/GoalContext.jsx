@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useDataStore } from "./DataContext";
 
-const GoalContext = createContext(undefined);
+const GoalContext = createContext(null);
 
 export const GoalProvider = ({ children }) => {
   const store = useDataStore();
@@ -54,18 +54,18 @@ export const GoalProvider = ({ children }) => {
     })();
   }, [store, goal, loading]);
 
-  const updateGoal = useCallback((start, end, weeklyRate) => {
-    setGoal({ start, end, weeklyRate });
+  const updateGoal = useCallback((goal) => {
+    setGoal(goal);
   }, []);
 
   const deleteGoal = useCallback(() => {
     setGoal(null);
   }, []);
 
-  const value = useMemo(() => {
-    (goal, loading);
-    (updateGoal, deleteGoal);
-  }, [goal, loading, updateGoal, deleteGoal]);
+  const value = useMemo(
+    () => ({ goal, loading, updateGoal, deleteGoal }),
+    [goal, loading, updateGoal, deleteGoal],
+  );
 
   return <GoalContext.Provider value={value}>{children}</GoalContext.Provider>;
 };
@@ -73,7 +73,7 @@ export const GoalProvider = ({ children }) => {
 // eslint-disable-next-line react-refresh/only-export-components
 export function useGoal() {
   const ctx = useContext(GoalContext);
-  if (ctx === undefined) {
+  if (!ctx) {
     throw new Error("useGoal must be used within a GoalProvider");
   }
   return ctx;
