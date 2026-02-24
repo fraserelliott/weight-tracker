@@ -4,6 +4,7 @@ import "@fraserelliott/fe-components/stylesheet";
 import { Header } from "@components/Header";
 import { Footer } from "@components/Footer";
 import { SettingsPage } from "@pages/SettingsPage";
+import { HomePage } from "@pages/HomePage";
 import {
   OptionalPortal,
   ToastMessageDisplay,
@@ -16,7 +17,7 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<></>} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/goals" element={<></>} />
           <Route path="/info" element={<></>} />
           <Route path="/settings" element={<SettingsPage />} />
