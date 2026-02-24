@@ -6,6 +6,13 @@
  */
 
 /**
+ * @typedef {Object} Goal
+ * @property {string} start  // ISO date string
+ * @property {string} end  // ISO date string
+ * @property {number} weeklyRate
+ */
+
+/**
  * @typedef {Object} WeightDataStore
  * @property {(entry: Omit<WeightEntry, "id">) => Promise<WeightEntry>} addWeight
  * @property {() => Promise<WeightEntry[]>} getWeights

@@ -2,6 +2,7 @@ import localforage from "localforage";
 
 const WEIGHT_STORAGE_KEY = "weight-tracker:weights";
 const SETTINGS_STORAGE_KEY = "weight-tracker:settings";
+const GOAL_STORAGE_KEY = "weight-tracker:goal";
 
 async function load(key) {
   const raw = await localforage.getItem(key);
@@ -37,5 +38,14 @@ export const dataStore = {
 
   async saveSettings(settings) {
     await save(SETTINGS_STORAGE_KEY, settings);
+  },
+
+  async getGoal() {
+    const raw = await load(GOAL_STORAGE_KEY);
+    return raw && typeof raw === "object" && !Array.isArray(raw) ? raw : null;
+  },
+
+  async saveGoal(goal) {
+    await save(GOAL_STORAGE_KEY, goal);
   },
 };
