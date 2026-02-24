@@ -29,4 +29,11 @@ export const UI = {
       "fe-d-flex fe-gap-3 fe-justify-center fe-items-center fe-w-100",
       ...extra,
     ),
+  Navbar: (...extra) =>
+    cx(
+      "fe-d-flex fe-flex-row list-style-none bg-secondary fe-w-100 fe-justify-center box-shadow-subtle",
+      ...extra,
+    ),
+  NavItem: (...extra) =>
+    cx("fe-d-flex fe-items-center fe-p-em-2 navlink", ...extra),
 };

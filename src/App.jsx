@@ -1,23 +1,28 @@
 import "./App.css";
-import { WeightTable } from "@components/WeightTable";
-import { WeightEntryForm } from "@components/WeightEntryForm";
-import { WeightChart } from "@components/WeightChart";
 import "@fraserelliott/fe-utilities/fe-utilities.css";
 import "@fraserelliott/fe-components/stylesheet";
+import { Header } from "@components/Header";
+import { Footer } from "@components/Footer";
 import { SettingsPage } from "@pages/SettingsPage";
 import {
   OptionalPortal,
   ToastMessageDisplay,
 } from "@fraserelliott/fe-components";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <SettingsPage />
-      <WeightTable />
-      <WeightEntryForm />
-      <WeightChart />
-
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<></>} />
+          <Route path="/goals" element={<></>} />
+          <Route path="/info" element={<></>} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Routes>
+      </BrowserRouter>
+      <Footer />
       <OptionalPortal portalTarget={document.body}>
         <ToastMessageDisplay />
       </OptionalPortal>
