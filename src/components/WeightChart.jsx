@@ -46,7 +46,7 @@ export function WeightChart() {
           <CartesianGrid strokeDasharray="5 5" strokeOpacity={0.4} />
           <Tooltip
             formatter={(value, name) => [
-              `${value} ${settings.weightFormat}`,
+              `${value} ${settings.weightUnit}`,
               name,
             ]}
             wrapperClassName="chart-tooltip"
@@ -69,7 +69,7 @@ export function WeightChart() {
             tick={{ fill: "var(--text-primary)" }}
           >
             <Label
-              value={`Weight (${settings.weightFormat})`}
+              value={`Weight (${settings.weightUnit})`}
               angle={-90}
               position="insideLeft"
               offset={10}

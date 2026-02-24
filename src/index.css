@@ -4,6 +4,7 @@
   --btn-primary: #64748b;
   --btn-primary-hover: #475569;
   --btn-primary-active: #334155;
+  --btn-primary-disabled: #475569;
   --text-primary: #f1f5f9;
   --text-secondary: #ffffff;
   --text-muted: #94a3b8;
@@ -65,9 +66,35 @@
   background-color: var(--bg-secondary) !important;
 }
 
-.app-btn-primary {
+.bg-dropdown {
+  background-color: var(--dropdown-bg);
+}
+
+.btn-primary {
+  transition:
+    background-color 0.15s ease,
+    transform 0.08s ease,
+    box-shadow 0.12s ease;
   background-color: var(--btn-primary);
   color: var(--text-primary);
+}
+
+.btn-primary:disabled {
+  background-color: var(--btn-primary-disabled);
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--btn-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.btn-primary:active {
+  background-color: var(--btn-primary-active);
+  transform: translateY(1px) scale(0.98);
 }
 
 .glass-border {
@@ -121,4 +148,17 @@ body,
   border-radius: 1em;
   padding: 1em;
   box-shadow: var(--box-shadow-subtle) !important;
+}
+
+.fe-font-size-2 {
+  font-size: 1.25em;
+}
+
+.min-width-40 {
+  min-width: 40%;
+}
+
+select {
+  text-align: center;
+  text-align-last: center;
 }

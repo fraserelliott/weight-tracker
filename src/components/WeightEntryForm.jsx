@@ -32,10 +32,7 @@ export function WeightEntryForm() {
 
   return (
     <div className={UI.Panel("fe-")}>
-      <form
-        onSubmit={handleSubmit(submitForm)}
-        className="fe-d-flex fe-gap-2 fe-justify-center fe-items-center fe-w-100"
-      >
+      <form onSubmit={handleSubmit(submitForm)} className={UI.Form()}>
         <input
           type="date"
           {...register("date", { required: true })}
@@ -47,7 +44,7 @@ export function WeightEntryForm() {
           className={UI.InputPrimary()}
           style={{ width: "4em" }}
         />
-        {settings.weightFormat}
+        {settings.weightUnit}
         <input type="submit" value="Add" className={UI.BtnPrimary()} />
       </form>
     </div>

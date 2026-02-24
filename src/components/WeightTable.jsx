@@ -54,10 +54,10 @@ export function WeightTable() {
               <tr key={w.id} className="fe-p-em-1">
                 <td>{applyDateFormat(w.date)}</td>
                 <td>
-                  {toDisplayWeight(w.weightKg)} {settings.weightFormat}
+                  {toDisplayWeight(w.weightKg)} {settings.weightUnit}
                 </td>
                 <td>
-                  {toDisplayWeight(w.rollingAverageKg)} {settings.weightFormat}
+                  {toDisplayWeight(w.rollingAverageKg)} {settings.weightUnit}
                 </td>
                 <td>
                   <button

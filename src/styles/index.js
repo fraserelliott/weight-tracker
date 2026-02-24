@@ -10,7 +10,7 @@ export const UI = {
       "fe-d-inline-flex fe-items-center fe-justify-center fe-gap-2 fe-p-em-1 fe-rounded-2 fe-pressable box-shadow-subtle",
       ...extra,
     ),
-  BtnPrimary: (...extra) => cx(UI.Btn(), "app-btn-primary", ...extra),
+  BtnPrimary: (...extra) => cx(UI.Btn(), "btn-primary", ...extra),
   InputPrimary: (...extra) =>
     cx(
       "bg-subtle text-primary glass-border box-shadow-subtle fe-rounded-1",
@@ -18,9 +18,15 @@ export const UI = {
     ),
   Panel: (...extra) =>
     cx(
-      "fe-p-em-3 fe-d-flex fe-flex-column fe-items-center fe-justify-center panel",
+      "fe-p-em-3 fe-d-flex fe-flex-column fe-items-center fe-justify-center panel fe-gap-2",
       appearance.Panel,
       ...extra,
     ),
   Table: (...extra) => cx("fe-w-100", ...extra),
+  Heading: (...extra) => cx("fe-fw-bold fe-font-size-2", ...extra),
+  Form: (...extra) =>
+    cx(
+      "fe-d-flex fe-gap-3 fe-justify-center fe-items-center fe-w-100",
+      ...extra,
+    ),
 };
