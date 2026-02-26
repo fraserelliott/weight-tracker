@@ -46,6 +46,7 @@ export function WeightTable() {
               <th>Date</th>
               <th>Weight</th>
               <th>7 Day Average</th>
+              <th>Target Weight</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -57,7 +58,12 @@ export function WeightTable() {
                   {toDisplayWeight(w.weightKg)} {settings.weightUnit}
                 </td>
                 <td>
-                  {toDisplayWeight(w.rollingAverageKg)} {settings.weightUnit}
+                  {toDisplayWeight(w.rollingAverageKg.avg)}{" "}
+                  {settings.weightUnit}
+                </td>
+                <td>
+                  {w.goalWeightKg &&
+                    `${toDisplayWeight(w.goalWeightKg.weight)} ${settings.weightUnit}`}
                 </td>
                 <td>
                   <button

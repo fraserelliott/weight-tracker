@@ -32,16 +32,18 @@ export function WeightChart() {
       .filter((w) => isISOInRange(w.date, start, end))
       .map((w) => ({
         date: w.date,
-        rollingAverage: toDisplayWeight(w.rollingAverageKg),
-      }));
+        rollingAverage: toDisplayWeight(w.rollingAverageKg.avg),
+        goalWeight: toDisplayWeight(w.goalWeightKg?.weight),
+      }))
+      .reverse();
   }, [weightsWithStats, toDisplayWeight]);
 
   if (weightsLoading || settingsLoading) return <p>Loading...</p>;
   if (!chartData.length) return <p>No entries yet.</p>;
 
   return (
-    <div style={{ height: 400 }} className={UI.Panel()}>
-      <ResponsiveContainer>
+    <div className={UI.Panel()}>
+      <ResponsiveContainer width="100%" height={400}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="5 5" strokeOpacity={0.4} />
           <Tooltip
@@ -82,6 +84,16 @@ export function WeightChart() {
             stroke="#3B82F6"
             strokeWidth={2.5}
             activeDot={{ r: 6 }}
+            strokeDasharray="5 5"
+          />
+          <Line
+            dataKey="goalWeight"
+            name="Target Weight"
+            stroke="#D1D5DB"
+            strokeWidth={2.5}
+            activeDot={{ r: 6 }}
+            strokeDasharray="5 5"
+            opacity="0.7"
           />
         </LineChart>
       </ResponsiveContainer>

@@ -26,31 +26,18 @@ export function GoalPage() {
       type: goal?.type || "",
       weeklyRate: goal?.weeklyRate * 100 || 0,
       start: goal?.start || nowISODate(),
-      end: goal?.end || "",
     });
   }, [loading, goal, reset]);
 
   const submitForm = (data) => {
     if (!isDirty) return;
-    if (data.start > data.end) {
-      addToastMessage("The start date must be before the end date", "error");
-      return;
-    }
-    if (data.start === data.end) {
-      addToastMessage(
-        "The start date cannot be the same as the end date",
-        "error",
-      );
-      return;
-    }
+
     const parsed = {
       type: data.type,
       weeklyRate: data.weeklyRate / 100,
       start: data.start,
-      end: data.end,
     };
     updateGoal(parsed);
-    // TODO: confirm dialog
     addToastMessage("Saved new goal", "success");
     reset(data);
   };
@@ -91,14 +78,6 @@ export function GoalPage() {
           <input
             type="date"
             {...register("start", { required: true })}
-            className={UI.InputPrimary()}
-          />
-        </div>
-        <div className="fe-d-flex fe-gap-2">
-          <label>End</label>
-          <input
-            type="date"
-            {...register("end", { required: true })}
             className={UI.InputPrimary()}
           />
         </div>

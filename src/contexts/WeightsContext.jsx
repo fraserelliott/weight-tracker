@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useDataStore } from "./DataContext";
 import { v4 as uuidv4 } from "uuid";
+import { useGoal } from "@contexts/GoalContext";
 
 const WeightsContext = createContext(undefined);
 
@@ -17,6 +18,7 @@ export const WeightsProvider = ({ children }) => {
   const saveQueue = useRef(Promise.resolve());
   const [loading, setLoading] = useState(true);
   const [weights, setWeights] = useState([]);
+  const { goal } = useGoal();
 
   // Hydrate once
   useEffect(() => {
@@ -57,8 +59,9 @@ export const WeightsProvider = ({ children }) => {
   }, [store, weights, loading]);
 
   const weightsWithStats = useMemo(() => {
-    return addRollingAverage(weights);
-  }, [weights]);
+    const enriched = addRollingAverage(weights);
+    return addGoalWeight(enriched, goal);
+  }, [weights, goal]);
 
   // Mutators: sync, stable, based on prev state
   const addWeight = useCallback((date, weightKg) => {
@@ -152,7 +155,47 @@ function rollingAverageDay(weightEntries, index) {
     }
     if (difference >= 7) break;
   }
-  return count ? sum / count : null;
+  return { count, avg: count ? sum / count : null };
+}
+
+// requires rolling averages in weightEntries
+function addGoalWeight(weightEntries, goal) {
+  if (!goal) return weightEntries;
+  return weightEntries.map((entry, index) => {
+    return {
+      ...entry,
+      goalWeightKg: goalWeightDay(weightEntries, goal, index),
+    };
+  });
+}
+
+function goalWeightDay(weightEntries, goal, index) {
+  if (index === weightEntries.length - 1) return null;
+  const entry = weightEntries[index];
+  const previousEntry = weightEntries[index + 1];
+  // previousEntry should be on/after goal start for a baseline
+  if (previousEntry.date < goal.start) return null;
+  return calculateGoalWeight(entry, previousEntry, goal);
+}
+
+function calculateGoalWeight(entry, previousEntry, goal) {
+  const entryDay = daysSinceEpoch(entry.date);
+  const prevDay = daysSinceEpoch(previousEntry.date);
+
+  const intervalDays = entryDay - prevDay;
+  if (intervalDays < 0) {
+    throw new Error(
+      "calculateGoalWeight: entry.date must be on/after previousEntry.date",
+    );
+  }
+
+  const weeklyMultiplier =
+    goal.type === "lose" ? 1 - goal.weeklyRate : 1 + goal.weeklyRate;
+
+  const baseline =
+    previousEntry.rollingAverageKg?.avg ?? previousEntry.weightKg;
+  const weight = baseline * Math.pow(weeklyMultiplier, intervalDays / 7);
+  return { intervalDays, weight };
 }
 
 const daysSinceEpoch = (dateStr) =>
