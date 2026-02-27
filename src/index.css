@@ -223,3 +223,9 @@ footer {
 footer a {
   color: inherit;
 }
+
+.logo {
+  height: 2em;
+  width: auto;
+  display: block;
+}

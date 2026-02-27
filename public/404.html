@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      const repo = "/weighttracker";
+      const path = location.pathname.replace(repo, "");
+      const query = location.search.slice(1);
+      const hash = location.hash.slice(1);
+
+      location.replace(
+        repo +
+          "/?p=" +
+          encodeURIComponent(path) +
+          "&q=" +
+          encodeURIComponent(query) +
+          "&h=" +
+          encodeURIComponent(hash),
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   const platform = env.PLATFORM || "web";
 
   return {
+    base: "./",
     plugins: [react()],
     resolve: {
       alias: {

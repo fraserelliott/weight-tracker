@@ -32,7 +32,7 @@ export const UI = {
     ),
   Navbar: (...extra) =>
     cx(
-      "fe-d-flex fe-flex-row list-style-none bg-secondary fe-w-100 fe-justify-center box-shadow-subtle",
+      "fe-d-flex fe-flex-row list-style-none bg-secondary fe-justify-center",
       ...extra,
     ),
   NavItem: (...extra) =>

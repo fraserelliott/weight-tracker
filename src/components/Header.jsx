@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { UI } from "@styles";
+import logo from "../assets/logo.png";
 
 const pages = [
   { name: "Home", to: "/" },
@@ -23,6 +24,12 @@ export function Header() {
   };
 
   return (
-    <ul className={UI.Navbar()}>{pages.map((page) => renderPageLink(page))}</ul>
+    <div className="fe-d-flex fe-justify-between bg-secondary fe-items-center fe-w-100 box-shadow-subtle">
+      <img src={logo} alt="Logo" className="fe-p-em-1 logo" />
+      <ul className={UI.Navbar()}>
+        {pages.map((page) => renderPageLink(page))}
+      </ul>
+      <div></div>
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-import "./App.css";
 import "@fraserelliott/fe-utilities/fe-utilities.css";
 import "@fraserelliott/fe-components/stylesheet";
 import { Header } from "@components/Header";
