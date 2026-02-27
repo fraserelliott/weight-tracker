@@ -1,5 +1,5 @@
 import { useGoal } from "@contexts/GoalContext";
-import { UI } from "@styles";
+import { UI, appearance } from "@styles";
 import { useForm } from "react-hook-form";
 import {
   useToast,
@@ -8,6 +8,7 @@ import {
 } from "@fraserelliott/fe-components";
 import { useEffect } from "react";
 import { nowISODate } from "@util/dateUtil";
+import { useState } from "react";
 
 export function GoalPage() {
   const { goal, updateGoal, deleteGoal, loading } = useGoal();
@@ -17,8 +18,8 @@ export function GoalPage() {
     reset,
     formState: { isDirty },
   } = useForm();
-
   const { addToastMessage } = useToast();
+  const [showDialog, setShowDialog] = useState(false);
 
   useEffect(() => {
     if (loading) return;
@@ -40,6 +41,11 @@ export function GoalPage() {
     updateGoal(parsed);
     addToastMessage("Saved new goal", "success");
     reset(data);
+  };
+
+  const onConfirm = async () => {
+    await deleteGoal();
+    addToastMessage("Deleted goal", "success");
   };
 
   return (
@@ -88,6 +94,23 @@ export function GoalPage() {
           className={UI.BtnPrimary()}
         />
       </form>
+      <button
+        className={UI.BtnDanger()}
+        onClick={() => setShowDialog(true)}
+        disabled={!goal}
+      >
+        Delete
+      </button>
+
+      <OptionalPortal portalTarget={document.body}>
+        <ConfirmDialog
+          open={showDialog}
+          text="Are you sure you want to delete your goal?"
+          onConfirm={onConfirm}
+          onOpenChange={setShowDialog}
+          style={appearance}
+        />
+      </OptionalPortal>
     </div>
   );
 }
