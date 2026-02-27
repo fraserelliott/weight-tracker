@@ -4,7 +4,7 @@ A trend-focused weight tracking application built with React.
 
 This project emphasises statistical smoothing and percentage-based projections rather than reacting to individual daily measurements. The UI is intentionally minimal and built around a small custom utility system.
 
-Live Demo: _[GitHub Pages link here]_
+Live Demo: https://fraserelliott.github.io/weight-tracker/
 
 ---
 
