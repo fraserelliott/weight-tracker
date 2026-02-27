@@ -2,7 +2,11 @@ import { useWeights } from "@contexts/WeightsContext";
 import { useSettings } from "@contexts/SettingsContext";
 import { useState } from "react";
 import { UI, appearance } from "@styles";
-import { OptionalPortal, ConfirmDialog } from "@fraserelliott/fe-components";
+import {
+  OptionalPortal,
+  ConfirmDialog,
+  useToast,
+} from "@fraserelliott/fe-components";
 
 export function WeightTable() {
   const {
@@ -16,6 +20,7 @@ export function WeightTable() {
     deleteWeight,
     loading: weightsLoading,
   } = useWeights();
+  const { addToastMessage } = useToast();
   const [extended, setExtended] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [pendingId, setPendingId] = useState(null);
@@ -34,6 +39,7 @@ export function WeightTable() {
 
   const onConfirm = async () => {
     await deleteWeight(pendingId);
+    addToastMessage("Deleted weight", "success");
     setPendingId(null);
   };
 

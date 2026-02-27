@@ -3,6 +3,7 @@ import { useWeights } from "@contexts/WeightsContext";
 import { useSettings } from "@contexts/SettingsContext";
 import { nowISODate } from "@util/dateUtil";
 import { UI } from "@styles";
+import { useToast } from "@fraserelliott/fe-components";
 
 export function WeightEntryForm() {
   const { register, handleSubmit, reset } = useForm({
@@ -16,17 +17,18 @@ export function WeightEntryForm() {
     fromDisplayWeight,
     loading: settingsLoading,
   } = useSettings();
+  const { addToastMessage } = useToast();
 
   if (weightsLoading || settingsLoading) return <p>Loading...</p>;
 
   const submitForm = (data) => {
     const duplicate = findDuplicate(data);
     if (duplicate) {
-      // TODO: confirm box to ask if the user wants to update
-      console.warn(`Duplicate date detected for ${data.date}`);
+      addToastMessage("An entry already exists for this date", "error");
       return;
     }
     addWeight(data.date, fromDisplayWeight(data.weight));
+    addToastMessage("Saved weight", "success");
     reset();
   };
 
