@@ -6,6 +6,7 @@ import { Footer } from "@components/Footer";
 import { SettingsPage } from "@pages/SettingsPage";
 import { HomePage } from "@pages/HomePage";
 import { GoalPage } from "@pages/GoalPage";
+import { InfoPage } from "@pages/InfoPage";
 import {
   OptionalPortal,
   ToastMessageDisplay,
@@ -20,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/goals" element={<GoalPage />} />
-          <Route path="/info" element={<></>} />
+          <Route path="/info" element={<InfoPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </BrowserRouter>
