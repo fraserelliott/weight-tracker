@@ -24,6 +24,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  width: 100vw;
+
+  --fec-bg-panel: var(--bg-secondary);
+  --fec-border-color: rgba(255, 255, 255, 0.05);
+  --fec-btn-primary: var(--btn-primary);
+  --fec-bg-active: var(--btn-primary-active);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -136,17 +152,6 @@
   background: rgba(255, 255, 255, 0.03);
 }
 
-body {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  width: 100vw;
-}
-
 html,
 body,
 #root {
@@ -162,6 +167,12 @@ body,
 
 .weight-table {
   text-align: center;
+  width: 100%;
+}
+
+.weight-table td,
+th {
+  border: var(--glass-border);
 }
 
 .panel {
@@ -228,4 +239,33 @@ footer a {
   height: 2em;
   width: auto;
   display: block;
+}
+
+.card {
+  position: relative;
+}
+
+.expand-btn {
+  position: absolute;
+  top: 0.1rem;
+  right: 0.1rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.expand-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.expand-btn:active {
+  transform: scale(0.95);
 }

@@ -8,7 +8,7 @@ import {
   useToast,
 } from "@fraserelliott/fe-components";
 
-export function WeightTable() {
+export function WeightTable({ extended }) {
   const {
     settings,
     applyDateFormat,
@@ -21,7 +21,6 @@ export function WeightTable() {
     loading: weightsLoading,
   } = useWeights();
   const { addToastMessage } = useToast();
-  const [extended, setExtended] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [pendingId, setPendingId] = useState(null);
 
@@ -44,73 +43,59 @@ export function WeightTable() {
   };
 
   return (
-    <div onClick={() => setExtended((prev) => !prev)} className={UI.Panel()}>
-      <div style={extended ? extendedStyle : collapsedStyle}>
-        <table className={UI.Table("weight-table")}>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Weight</th>
-              <th>7 Day Average</th>
-              <th>Target Weight</th>
-              <th>Delete</th>
+    <div style={extended ? {} : collapsedStyle}>
+      <table className="weight-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Weight</th>
+            <th>7 Day Average</th>
+            <th>Target Weight</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {weightsWithStats.map((w) => (
+            <tr key={w.id} className="fe-p-em-1">
+              <td>{applyDateFormat(w.date)}</td>
+              <td>
+                {toDisplayWeight(w.weightKg)} {settings.weightUnit}
+              </td>
+              <td>
+                {toDisplayWeight(w.rollingAverageKg.avg)} {settings.weightUnit}
+              </td>
+              <td>
+                {w.goalWeightKg &&
+                  `${toDisplayWeight(w.goalWeightKg.weight)} ${settings.weightUnit}`}
+              </td>
+              <td>
+                <button
+                  className={UI.BtnPrimary()}
+                  onClick={() => openConfirm(w.id)}
+                >
+                  X
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {weightsWithStats.map((w) => (
-              <tr key={w.id} className="fe-p-em-1">
-                <td>{applyDateFormat(w.date)}</td>
-                <td>
-                  {toDisplayWeight(w.weightKg)} {settings.weightUnit}
-                </td>
-                <td>
-                  {toDisplayWeight(w.rollingAverageKg.avg)}{" "}
-                  {settings.weightUnit}
-                </td>
-                <td>
-                  {w.goalWeightKg &&
-                    `${toDisplayWeight(w.goalWeightKg.weight)} ${settings.weightUnit}`}
-                </td>
-                <td>
-                  <button
-                    className={UI.BtnPrimary()}
-                    onClick={() => openConfirm(w.id)}
-                  >
-                    X
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
 
-        <OptionalPortal portalTarget={document.body}>
-          <ConfirmDialog
-            open={showDialog}
-            text="Are you sure you want to delete this entry?"
-            onCancel={onCancel}
-            onConfirm={onConfirm}
-            onOpenChange={setShowDialog}
-            style={appearance}
-          />
-        </OptionalPortal>
-      </div>
+      <OptionalPortal portalTarget={document.body}>
+        <ConfirmDialog
+          open={showDialog}
+          text="Are you sure you want to delete this entry?"
+          onCancel={onCancel}
+          onConfirm={onConfirm}
+          onOpenChange={setShowDialog}
+          style={appearance}
+        />
+      </OptionalPortal>
     </div>
   );
 }
 
-const defaultStyle = {
-  overflow: "auto",
-  transition: "max-height 250ms ease-in-out",
-  width: "100%",
-};
-
 const collapsedStyle = {
-  ...defaultStyle,
+  overflow: "auto",
   maxHeight: "200px",
-};
-
-const extendedStyle = {
-  ...defaultStyle,
-  maxHeight: "75vh",
 };
