@@ -49,6 +49,11 @@ export function InfoPage() {
         would happen if you maintained your chosen rate. The gap between them is
         information - not success or failure.
       </p>
+
+      <p>
+        Note: charts are best viewed on larger screens. On smaller devices, the
+        table provides the most reliable overview of your data.
+      </p>
     </div>
   );
 }

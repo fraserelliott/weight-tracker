@@ -12,9 +12,8 @@ import {
   Tooltip,
   Label,
 } from "recharts";
-import { UI } from "@styles";
 
-export function WeightChart() {
+export function WeightChart({ extended }) {
   const {
     settings,
     formatDayMonth,
@@ -45,8 +44,8 @@ export function WeightChart() {
   if (!chartData.length) return <p>No entries yet.</p>;
 
   return (
-    <div className={UI.Panel("card")}>
-      <ResponsiveContainer width="100%" height={400}>
+    <div style={{ height: extended ? "clamp(400px, 60vh, 800px)" : "400px" }}>
+      <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="5 5" strokeOpacity={0.4} />
           <Tooltip

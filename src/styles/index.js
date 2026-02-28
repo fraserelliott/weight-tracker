@@ -2,7 +2,6 @@ import { cx } from "@fraserelliott/fe-utilities/cx";
 
 export const appearance = {
   Panel: "bg-secondary glass-border fe-rounded-1 box-shadow-subtle",
-  BtnPrimary: "btn-primary",
 };
 
 export const UI = {
@@ -20,7 +19,7 @@ export const UI = {
     ),
   Panel: (...extra) =>
     cx(
-      "fe-p-em-3 fe-d-flex fe-flex-column fe-items-stretch fe-justify-center panel fe-gap-2",
+      "fe-p-em-3 fe-d-flex fe-flex-column fe-justify-center panel fe-gap-2",
       appearance.Panel,
       ...extra,
     ),

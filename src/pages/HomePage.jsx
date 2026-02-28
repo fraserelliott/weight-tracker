@@ -1,4 +1,4 @@
-import { WeightChart } from "@components/WeightChart";
+import { WeightChartCard } from "@components/WeightChartCard";
 import { WeightTableCard } from "@components/WeightTableCard";
 import { WeightEntryForm } from "@components/WeightEntryForm";
 
@@ -7,7 +7,7 @@ export function HomePage() {
     <>
       <WeightTableCard />
       <WeightEntryForm />
-      <WeightChart />
+      <WeightChartCard />
     </>
   );
 }

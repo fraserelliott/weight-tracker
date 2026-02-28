@@ -49,7 +49,7 @@ export function GoalPage() {
   };
 
   return (
-    <div className={UI.Panel()}>
+    <div className={UI.Panel("fe-items-center")}>
       <h1 className={UI.Heading()}>Goal</h1>
       <form
         onSubmit={handleSubmit(submitForm)}
