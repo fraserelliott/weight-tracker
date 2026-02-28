@@ -129,9 +129,9 @@ export const SettingsProvider = ({ children }) => {
     (weight) => {
       switch (weightUnitSetting) {
         case "kg":
-          return formatDecimal(weight);
+          return parseFloat(weight);
         case "lb":
-          return formatDecimal(weight / 2.20462);
+          return parseFloat(weight) / 2.20462;
       }
     },
     [weightUnitSetting],

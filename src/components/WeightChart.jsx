@@ -33,7 +33,10 @@ export function WeightChart() {
       .map((w) => ({
         date: w.date,
         rollingAverage: toDisplayWeight(w.rollingAverageKg.avg),
-        goalWeight: toDisplayWeight(w.goalWeightKg?.weight),
+        goalWeight:
+          w.goalWeightKg?.weight != null
+            ? toDisplayWeight(w.goalWeightKg.weight)
+            : null,
       }))
       .reverse();
   }, [weightsWithStats, toDisplayWeight]);

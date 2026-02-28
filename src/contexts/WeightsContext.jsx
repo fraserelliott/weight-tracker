@@ -150,7 +150,7 @@ function rollingAverageDay(weightEntries, index) {
     const entryDate = daysSinceEpoch(weightEntries[i].date);
     const difference = indexDate - entryDate;
     if (difference < 7) {
-      sum += weightEntries[i].weightKg;
+      sum += parseFloat(weightEntries[i].weightKg);
       count++;
     }
     if (difference >= 7) break;

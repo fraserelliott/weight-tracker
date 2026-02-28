@@ -22,6 +22,10 @@ export function WeightEntryForm() {
   if (weightsLoading || settingsLoading) return <p>Loading...</p>;
 
   const submitForm = (data) => {
+    if (data.date > nowISODate()) {
+      addToastMessage("The date selected is in the future", "error");
+      return;
+    }
     const duplicate = findDuplicate(data);
     if (duplicate) {
       addToastMessage("An entry already exists for this date", "error");
