@@ -46,6 +46,9 @@ export function WeightEntryForm() {
         />
         <input
           type="number"
+          step="0.1"
+          min="0"
+          inputmode="decimal"
           {...register("weight", { required: true })}
           className={UI.InputPrimary()}
           style={{ width: "4em" }}
