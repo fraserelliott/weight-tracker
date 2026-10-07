@@ -12,7 +12,7 @@ import {
 } from "@fraserelliott/fe-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-const repo = "/weight-tracker/";
+const repo = "/";
 const basename = import.meta.env.PROD ? repo : "/";
 
 function App() {

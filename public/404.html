@@ -1,23 +1,24 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
+    <title>Weight Tracker</title>
+
     <script>
-      const repo = "/weight-tracker";
-      const path = location.pathname.replace(repo, "");
+      const path = location.pathname;
       const query = location.search.slice(1);
       const hash = location.hash.slice(1);
 
       location.replace(
-        repo +
-          "/?p=" +
+        "/?p=" +
           encodeURIComponent(path) +
           "&q=" +
           encodeURIComponent(query) +
           "&h=" +
-          encodeURIComponent(hash),
+          encodeURIComponent(hash)
       );
     </script>
   </head>
+
   <body></body>
 </html>

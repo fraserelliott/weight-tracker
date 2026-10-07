@@ -79,7 +79,7 @@ body {
 }
 
 .bg-secondary {
-  background-color: var(--bg-secondary) !important;
+  background-color: var(--bg-secondary);
 }
 
 .bg-dropdown {
